@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.conf import settings
+from carts.models import Cart
 from core.models import BaseModel
 from coupons.models import ItemSaleCoupon
 from products.models import Product
@@ -13,8 +14,9 @@ class Order(BaseModel):
     class Meta:
         ordering = ['-full_price']
 
+    cart = models.ForeignKey(Cart)
     products = models.ManyToManyField(Product)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    username = models.ForeignKey(settings.AUTH_USER_MODEL)
     coupon = models.ForeignKey(ItemSaleCoupon, null=True, blank=True,
                                verbose_name="Coupon")
     additional_information = models.TextField(
