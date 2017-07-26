@@ -10,8 +10,24 @@
 
 <div class="container">
 	<div class="section">
+    <ul>
+      Sort products:
+      <li>
+        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=name">By name. </a>
+      </li>
+      <li>
+        By rating:
+        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=-rating">From highest to lowest. </a>
+        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=rating">From lowest to highest. </a>
+      </li>
+      <li>
+        By price:
+        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=-price">From highest to lowest. </a>
+        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=price">From lowest to highest. </a>
+      </li>
+    </ul>
 	    <div class="row">
-			{% for product in category.category_products.all %}
+			{% for product in category_products %}
 
 		        <div class="col s12 m4">
 		          <div class="card">

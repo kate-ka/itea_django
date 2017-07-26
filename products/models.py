@@ -20,6 +20,9 @@ class Category(BaseModel):
     def __unicode__(self):
         return self.name
 
+    def sorted_category_products(self, sort_by):
+        return self.category_products.order_by(sort_by)
+
 
 class Brand(BaseModel):
     name = models.CharField(max_length=50)
@@ -42,6 +45,7 @@ class Product(BaseModel):
     is_active = models.BooleanField(default=True)
     is_bestseller = models.BooleanField(default=False)
     attribute_values = models.ManyToManyField("AttributeValue", related_name="attribute_values")
+    rating = models.FloatField(default=0)
 
     class Meta:
         ordering = ['-create_date']
