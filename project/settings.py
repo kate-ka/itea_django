@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import sys
+reload(sys)
+sys.setdefaultencoding("ISO-8859-1")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -31,12 +34,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.core',
-    'apps.accounts',
-    'apps.products',
-    'apps.carts',
-    'apps.orders',
-    'apps.coupons',
+    'core',
+    'accounts',
+    'products',
+    'carts',
+    'orders',
+    'coupons',
 ]
 
 MIDDLEWARE = [
