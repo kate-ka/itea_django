@@ -1,4 +1,4 @@
-from django.db.models.expressions import F
+from django.db.models.aggregates import Avg
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls.base import reverse
@@ -72,12 +72,7 @@ class CreateProductReviewView(CreateView):
 
 
 @receiver(post_save, sender=ProductReview)
-def update_product_rating(**kwargs):
-    review = kwargs['instance']
-    product = review.product
-    review_rating = review.rating
-    if product.rating == 0:
-        product.rating = F('rating') + review_rating
-    else:
-        product.rating = (F('rating') + review_rating) / 2
-    product.save()
+def update_product_rating(instance, **kwargs):
+    instance.product.rating = instance.product.product_reviews.aggregate(
+        average_rating=Avg('rating'))['average_rating']
+    instance.product.save()
