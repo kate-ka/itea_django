@@ -1,3 +1,6 @@
+from django.db.models.expressions import F
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls.base import reverse
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
@@ -44,6 +47,13 @@ class CategoryDetailView(DetailView):
     slug_url_kwarg = 'category_slug'
     template_name = 'category_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(CategoryDetailView, self).get_context_data(**kwargs)
+        category = kwargs['object']
+        sort_by = self.request.GET.get("sort_by", "-create_date")
+        context['category_products'] = category.sorted_category_products(sort_by)
+        return context
+
 
 class CreateProductReviewView(CreateView):
     model = ProductReview
@@ -61,5 +71,13 @@ class CreateProductReviewView(CreateView):
         })
 
 
-
-
+@receiver(post_save, sender=ProductReview)
+def update_product_rating(**kwargs):
+    review = kwargs['instance']
+    product = review.product
+    review_rating = review.rating
+    if product.rating == 0:
+        product.rating = F('rating') + review_rating
+    else:
+        product.rating = (F('rating') + review_rating) / 2
+    product.save()
