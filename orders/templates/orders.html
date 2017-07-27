@@ -1,19 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>orders</title>
-</head>
-<body>
-<div>Total amount of orders is {{orders_count}}</div>
-{% for order in orders %}
-  <div>{{order}} {{order.full_price}}</div>
-  {%    if order.payment_cash == True %}
-    <div>Purchased for cash</div>
-  {% else %}
-    <div>Purchased with card</div>
-  {% endif %}
-{% endfor %}
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+{% block javascript %}
+  <script src="{% static 'js/show_select.js' %}"></script>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="center"><h1>Orders</h1></div>
+    <table class="centered striped z-depth-5">
+      <thead>
+        <td>Order No.:</td>
+        <td>Created:</td>
+        <td>Customer:</td>
+        <td>Total price:</td>
+      </thead>
+      <tbody>
+        {% for order in orders.all %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.created_date }}</td>
+            <td>{{ order.username }}</td>
+            <td>{{ order.full_price }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+{% endblock %}
