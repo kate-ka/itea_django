@@ -6,7 +6,7 @@ from django.db import models
 from django.utils.translation import ugettext as _
 
 from core.models import BaseModel
-from orders.models import Order
+# from orders.models import Order
 from products.models import Product
 
    
