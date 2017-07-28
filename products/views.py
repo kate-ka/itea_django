@@ -7,7 +7,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 
 from products.forms import ProductReviewForm
-from products.models import Product, Category, ProductReview
+from products.models import Product, Category, ProductReview, Brand
 
 
 class ProductsView(TemplateView):
@@ -29,15 +29,7 @@ class ProductDetailView(DetailView):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
         form = ProductReviewForm()
         context['form'] = form
-        return context
-
-
-class CategoriesView(TemplateView):
-    template_name = "index.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(CategoriesView, self).get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
+        context['product_reviews'] = kwargs['object'].get_product_reviews()
         return context
 
 
@@ -52,6 +44,19 @@ class CategoryDetailView(DetailView):
         category = kwargs['object']
         sort_by = self.request.GET.get("sort_by", "-create_date")
         context['category_products'] = category.sorted_category_products(sort_by)
+        return context
+
+
+class BrandDetailView(DetailView):
+    model = Brand
+    context_object_name = 'brand'
+    template_name = 'brand_detail.html'
+    pk_url_kwarg = 'brand_id'
+
+    def get_context_data(self, **kwargs):
+        context = super(BrandDetailView, self).get_context_data(**kwargs)
+        sort_by = self.request.GET.get("sort_by", "-create_date")
+        context['brand_products'] = kwargs['object'].sorted_brand_products(sort_by)
         return context
 
 

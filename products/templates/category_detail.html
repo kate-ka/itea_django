@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load products_tags %}
 {% block content %}
 <div>
   {{ category.name }}
@@ -10,40 +11,46 @@
 
 <div class="container">
 	<div class="section">
-    <ul>
-      Sort products:
-      <li>
-        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=name">By name. </a>
-      </li>
-      <li>
-        By rating:
-        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=-rating">From highest to lowest. </a>
-        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=rating">From lowest to highest. </a>
-      </li>
-      <li>
-        By price:
-        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=-price">From highest to lowest. </a>
-        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=price">From lowest to highest. </a>
-      </li>
-    </ul>
+  {% show_product_filters category %}
+{#    <ul>#}
+{#      Sort products:#}
+{#      <li>#}
+{#        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=name">By name. </a>#}
+{#      </li>#}
+{#      <li>#}
+{#        By rating:#}
+{#        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=-rating">From highest to lowest. </a>#}
+{#        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=rating">From lowest to highest. </a>#}
+{#      </li>#}
+{#      <li>#}
+{#        By price:#}
+{#        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=-price">From highest to lowest. </a>#}
+{#        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=price">From lowest to highest. </a>#}
+{#      </li>#}
+{#    </ul>#}
 	    <div class="row">
 			{% for product in category_products %}
 
 		        <div class="col s12 m4">
-		          <div class="card">
-		            <div class="card-image">
-		              <img src="{{ product.product_images.first.image.url }}" alt="{{ product.name }}">
-		              <span class="card-title" style="background-color: dimgrey;">{{ product.name }}</span>
+
+		            <div class="card">
+		              <div class="card-image">
+		                <img src="{{ product.product_images.first.image.url }}" alt="{{ product.name }}">
+		                <a href="{{ product.get_absolute_url }}">
+                      <span class="card-title" style="background-color: dimgrey;">{{ product.name }}</span>
+                      </a>
+		              </div>
+		              <div class="card-content">
+                    <a href="{{ product.brand.get_absolute_url }}">
+                      <h5 class="center">{{ product.brand.name }}</h5></a>
+				          <h5 class="center">Ціна: {{ product.product_price }}</h5>
+		                <p>{{ product.description|truncatechars:130 }}</p>
+		              </div>
+		              <div class="card-action">
+		                <a href="{{ product.get_absolute_url }}">Add to cart</a>
+		              </div>
 		            </div>
-		            <div class="card-content">
-		            	<h5 class="center">{{ product.brand }}</h5>
-				        <h5 class="center">Ціна: {{ product.price }}</h5>
-		              <p>{{ product.description|truncatechars:130 }}</p>
-		            </div>
-		            <div class="card-action">
-		              <a href="{% url 'product_detail' product_slug=product.slug %}">Add to cart</a>
-		            </div>
-		          </div>
+
 		        </div>
 
 <!-- 				<div class="col s12 m4" style="height: 550px!important;">
