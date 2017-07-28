@@ -1,11 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>users</title>
+	<title> users </title>
 </head>
-<body>
-USERS
+<style>
+   body{
+    background-color: #81AFDE;
+   }
+</style>
 
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+		<h1>USERS</h1>
+		<hr>
+		<font size="5">
+		{% for user in users %}
+			<font color="yellow">username:</font> {{ user }};
+
+			{% if user.first_name or user.last_name %}
+				name: {{ user.first_name }} {{ user.last_name }};
+			{% endif %}
+
+			{% if user.email %}
+				e-mail: {{ user.email }};
+			{% endif %}
+
+			{% if user.mobile_number %}
+				mobile number: {{ user.mobile_number }};
+			{% endif %}
+
+			{% if user.is_superuser %}
+				status: <font color=#8F0E17><strong>superuser</strong></font>;
+			{% else %}
+				status: <font color="blue">user;</font>
+			{% endif %}
+			<br>
+		{% endfor %}
+		</font>
+	</div>
+</div>
+{% endblock %}
