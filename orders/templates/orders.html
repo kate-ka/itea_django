@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>orders</title>
+</head>
+<body>
+<div>Total amount of orders is {{orders_count}}</div>
+{% for order in orders %}
+  <div>{{order}} {{order.full_price}}</div>
+  {%    if order.payment_cash == True %}
+    <div>Purchased for cash</div>
+  {% else %}
+    <div>Purchased with card</div>
+  {% endif %}
+{% endfor %}
+
+</body>
+</html>

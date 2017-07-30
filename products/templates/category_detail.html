@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+  {{ category.name }}
+  <img src="{{ category.image.url }}">
+</div>
+
+<div>{{ category.descrition }}</div>
+
+
+<div class="container">
+	<div class="section">
+    <ul>
+      Sort products:
+      <li>
+        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=name">By name. </a>
+      </li>
+      <li>
+        By rating:
+        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=-rating">From highest to lowest. </a>
+        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=rating">From lowest to highest. </a>
+      </li>
+      <li>
+        By price:
+        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=-price">From highest to lowest. </a>
+        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=price">From lowest to highest. </a>
+      </li>
+    </ul>
+	    <div class="row">
+			{% for product in category_products %}
+
+		        <div class="col s12 m4">
+		          <div class="card">
+		            <div class="card-image">
+		              <img src="{{ product.product_images.first.image.url }}" alt="{{ product.name }}">
+		              <span class="card-title" style="background-color: dimgrey;">{{ product.name }}</span>
+		            </div>
+		            <div class="card-content">
+		            	<h5 class="center">{{ product.brand }}</h5>
+				        <h5 class="center">Ціна: {{ product.price }}</h5>
+		              <p>{{ product.description|truncatechars:130 }}</p>
+		            </div>
+		            <div class="card-action">
+		              <a href="{% url 'product_detail' product_slug=product.slug %}">Add to cart</a>
+		            </div>
+		          </div>
+		        </div>
+
+<!-- 				<div class="col s12 m4" style="height: 550px!important;">
+				    <div class="icon-block">
+				        <h4 class="center light-blue-text"><i class="material-icons"><a href=""></a></i></h4>
+				        <h5 class="center">{{ product.brand }}</h5>
+				        <h5 class="center">Ціна: {{ product.price }}</h5>
+				        <p class="light"></p>
+				        <div align="center">
+				        <img src="{{ product.product_images.first.image.url }}" width='240' >
+				       	</div>
+				    </div>
+				</div> -->
+
+			{% endfor %}
+		</div>
+    </div>
+</div>
+{% endblock %}
