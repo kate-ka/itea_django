@@ -21,6 +21,9 @@
             <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
         </div>
     </nav>
+    {% for currency in currencies %}
+      <a href="{% url 'choose_currency' %}?currency={{ currency.name }}">{{ currency.symbol }}</a>
+    {% endfor %}
     <div class="section no-pad-bot" id="index-banner">
         <div class="container">
             <br>

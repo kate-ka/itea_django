@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load products_tags %}
+
 {% block content %}
 <div>
   {{ brand.name }}
@@ -25,7 +26,7 @@
 		              <div class="card-content">
                     <a href="{{ product.brand.get_absolute_url }}">
                       <h5 class="center">{{ product.brand.name }}</h5></a>
-				          <h5 class="center">Ціна: {{ product.product_price }}</h5>
+				          <h5 class="center">Ціна: {% show_price_in_user_currency product%} </h5>
 		                <p>{{ product.description|truncatechars:130 }}</p>
 		              </div>
 		              <div class="card-action">

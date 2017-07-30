@@ -1,6 +1,7 @@
 from django.db.models.aggregates import Avg
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.http.response import HttpResponseRedirect
 from django.urls.base import reverse
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
@@ -74,6 +75,12 @@ class CreateProductReviewView(CreateView):
         return reverse("product_detail", kwargs={
             "product_slug":self.kwargs['product_slug']
         })
+
+
+def choose_currency(request):
+    user_currency = request.GET.get("currency")
+    request.session['currency'] = user_currency
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @receiver(post_save, sender=ProductReview)

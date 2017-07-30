@@ -20,8 +20,12 @@ class ProductAdmin(admin.ModelAdmin):
 
     filter_horizontal = ['categories', 'attribute_values']
 
-    # def save_model(self, request, obj, form, change):
-        # super(ProductAdmin, self).save_model(request, obj, form, change)
+    def save_model(self, request, obj, form, change):
+        slug = slugify(obj.name)
+        if slug != obj.slug:
+            obj.slug = slug
+
+        super(ProductAdmin, self).save_model(request, obj, form, change)
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -31,8 +35,9 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display_links = ('category_view', 'description')
 
     def save_model(self, request, obj, form, change):
-        if not obj.slug:
-            obj.slug = slugify(self.name)
+        slug = slugify(obj.name)
+        if slug != obj.slug:
+            obj.slug = slug
         super(CategoryAdmin, self).save_model(request, obj, form, change)
 
     def category_view(self, obj):
