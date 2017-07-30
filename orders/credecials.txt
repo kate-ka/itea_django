@@ -1,3 +1,0 @@
-email: pryimar@meta.ua
-username: roman
-password: itea1234
