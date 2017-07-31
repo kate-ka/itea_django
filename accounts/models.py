@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+import datetime
+from django.http import HttpResponse, HttpResponseNotFound
 
 
 class User(AbstractUser):
@@ -39,6 +41,12 @@ class User(AbstractUser):
     @staticmethod
     def get_user_by_name(name):
         return User.objects.filter(name=name).first()
+
+    @staticmethod
+    def current_datetime(request):
+        now = datetime.datetime.now()
+        html = "<html><body>It is now %s.</body></html>" % now
+        return HttpResponse(html)
 
     def deactivation_user(self):
         self.is_active=False
