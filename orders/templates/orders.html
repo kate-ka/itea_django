@@ -8,18 +8,19 @@
     <div class="center"><h1>Orders</h1></div>
     <table class="centered striped z-depth-5">
       <thead>
-        <td>Order No.:</td>
-        <td>Created:</td>
-        <td>Customer:</td>
-        <td>Total price:</td>
+        <td class="center">Order No.:</td>
+        <td class="center">Created:</td>
+        <td class="center">Customer:</td>
+        <td class="center">Total price:</td>
       </thead>
       <tbody>
         {% for order in orders.all %}
         <tr>
-            <td>{{ order.id }}</td>
-            <td>{{ order.created_date }}</td>
-            <td>{{ order.username }}</td>
-            <td>{{ order.full_price }}</td>
+            <td class="center">{{ order.id }}</td>
+            <td class="center">{{ order.created_date }}</td>
+            <td class="center">{{ order.username }}</td>
+            <td class="center">{{ order.full_price }}</td>
+            <td class="center"><a href="{% url 'order_details' order_id=order.id %} ">Details</a></td>
         </tr>
         {% endfor %}
       </tbody>
