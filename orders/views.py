@@ -14,3 +14,15 @@ class OrderView(TemplateView):
         context['orders'] = Order.objects.all()
         context['orders_count'] = len(Order.objects.all())
         return context
+
+
+class OrderDetailsView(TemplateView):
+    context_object_name = 'order'
+    template_name = 'order_details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(OrderDetailsView, self).get_context_data(**kwargs)
+        order = Order.objects.get(id=kwargs.get('order_id'))
+        context['order'] = order
+        context['products'] = order.products.all()
+        return context
