@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="{% url "cart_product_delete" object.id %}" method="post">
+  {% csrf_token %}
+  <p>You really want to delete this product "{{ object }}"?</p>
+  <input type="submit" value="Yes" name="delete_button"
+         class="btn btn-danger" /><br /><br />
+</form>
+
+{% endblock content %}

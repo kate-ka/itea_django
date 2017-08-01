@@ -6,8 +6,8 @@ from django.db import models
 from django.utils.translation import ugettext as _
 
 from core.models import BaseModel
-from orders.models import Order
-from products.models import Product
+# from orders.models import Order
+from products.models import Product, ProductImage
 
    
 class Cart(BaseModel):

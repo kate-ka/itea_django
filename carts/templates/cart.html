@@ -1,0 +1,90 @@
+
+{% extends 'base.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8"/>
+    <title>Cart View</title>
+  <meta name="description" value="Cart System" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet"
+        href="./css/main.css">
+</head>
+<body>
+
+
+  <!-- Start Container -->
+  <div class="container">
+
+    <!-- Start Header -->
+    <div class="row" id="header"> 
+      <div class="col-xs-8">
+        <h1>Cart View</h1>
+      </div>
+    </div>
+    <!-- End Header -->
+
+    <!-- Start Content Columns -->
+    <div class="row" id="content-columns">
+      <div class="col-xs-12" id="content-column">
+
+        <a href="#" class="btn btn-primary">Make Order</a>
+        
+        <!-- Start Products Listing -->
+        <table class="table">
+          <thead>
+            <tr>
+                <th><a href="#">#</a></th>
+                <th>Product name</th>
+                <th>Product Description</th>
+                <th>Product Price</th>
+                <th>Product Count</th>
+                <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td><a href="{% url "cart_edit" %}">{{ product.name }}</td>
+              <td>{{ product.description }}</td>
+              <td>{{ product.price }}</td>
+              <td>{{ product.quantity }}</td>
+              <td>
+                <div class="col-xs-12">
+                  <a href="{% url "cart_product_delete" %}" class="btn btn-primary">Delete</a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+        <!-- End Products Listing -->
+
+      </div>
+    </div>
+
+    <div class="row" id="content-columns">
+      <div class="col-xs-12" id="content-column">
+          <a href="#" class="btn btn-primary">Make Order</a>
+      </div>
+    </div>
+    <!-- End Content Columns -->
+
+  </div>
+  <!-- End Container -->
+
+  <!-- Javascripts Inclusion -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+{% endblock content %}
+

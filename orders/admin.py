@@ -7,5 +7,8 @@ from .models import Order
 
 class OrderAdmin(admin.ModelAdmin):
     filter_horizontal = ['products']
+    list_display = ['id', 'create_date', 'username', 'full_price']
+    list_filter = ['username']
+    search_fields = ['username', 'id']
 
 admin.site.register(Order, OrderAdmin)
