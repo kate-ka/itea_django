@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block javascript %}
+  <script src="{% static 'js/show_select.js' %}"></script>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <table>
+      <tr>
+        <td class="center"><h1>Order No. {{ order.id }}</h1></td>
+      </tr>
+      <tr>
+        <td class="left"><p>Created: {{ order.created_date }}</p></td>
+        <td class="right"><p>Sent: {{ order.created_date }}</p></td>
+      </tr>
+      <tr>
+        <td class="left"><p>Customer: {{ order.username }}</p></td>
+        <td class="right"><p>Total: {{ order.full_price }}</p></td>
+      </tr>
+    </table>
+    <table class="centered striped z-depth-5">
+      <thead>
+        <td class="col s12 m6 l3 left" >Product</td>
+        <td class="center" >Price</td>
+        <td class="center" >Qantity</td>
+      </thead>
+      <tbody>
+      {% for product in products %}
+        <tr>
+            <td class="col s12 m6 l3 left">{{ product }}</td>
+            <td class="center">{{ product.price }}</td>
+            <td class="center">{{ product.quantity }}</td>
+
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+</div>
+{% endblock %}
