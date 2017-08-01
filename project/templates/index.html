@@ -12,7 +12,7 @@
 <body>
     <nav class="light-blue lighten-1" role="navigation">
         <div class="nav-wrapper container">
-            <a id="logo-container" href="#" class="brand-logo">Logo</a><br>
+            <a id="logo-container" href="{% url 'index' %}" class="brand-logo">Logo</a><br>
             <ul class="right hide-on-med-and-down">
                 <li><a href="#">Navbar Link</a></li>
             </ul>
@@ -23,6 +23,9 @@
                 <i class="material-icons">menu</i></a>
         </div>
     </nav>
+    {% for currency in currencies %}
+      <a href="{% url 'choose_currency' %}?currency={{ currency.name }}">{{ currency.symbol }}</a>
+    {% endfor %}
 
     <div class="nav-wrapper container">
         <h5 align="left"><a href="login">Log in</a></h5>
