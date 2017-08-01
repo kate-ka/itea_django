@@ -6,8 +6,8 @@
 {% block content %}
 <div class="col s12 m6 l3">
   <div>{{ product.name }}</div>
-  <div>Price: {{ product.price }}</div>
-  <div> Brand: {{ product.brand }}</div>
+  <div>Price: {{ product.product_price }} </div>
+  <div> Brand: {{ product.brand.name }}</div>
   <div>
     {% for product_image in product.product_images.all %}
     <img src="{{ product_image.image.url }}" width='200' height='300' alt="{{ product.name }}">
@@ -16,7 +16,7 @@
 
   <div> Categories:
     {% for category in  product.categories.all %}
-      <a href="{% url 'category_detail' category_slug=category.slug %}">{{ category }}</a>
+      <a href="{{ category.get_absolute_url }}">{{ category.name }}</a>
       {% if forloop.last %}. {% else %},{% endif %}
     {% endfor %}
     {% for attr_value in product.attribute_values.all %}
@@ -25,7 +25,7 @@
   </div>
 </div>
   <div> Reviews:
-    {% for review in product.product_reviews.all %}
+    {% for review in product_reviews %}
       <div>{{ review.user.username }}</div>
       <div>{{ review.text }}</div>
       <div>{{ review.rating }}</div>

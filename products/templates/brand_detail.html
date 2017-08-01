@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load products_tags %}
+
+{% block content %}
+<div>
+  {{ brand.name }}
+
+</div>
+
+<div>{{ brand.descrition }}</div>
+
+
+<div class="container">
+	<div class="section">
+    {% show_product_filters brand %}
+	    <div class="row">
+			{% for product in brand_products %}
+
+		        <div class="col s12 m4">
+              <a href="{{ product.get_absolute_url }}">
+		            <div class="card">
+		              <div class="card-image">
+		                <img src="{{ product.product_images.first.image.url }}" alt="{{ product.name }}">
+		                <span class="card-title" style="background-color: dimgrey;">{{ product.name }}</span>
+		              </div>
+		              <div class="card-content">
+                    <a href="{{ product.brand.get_absolute_url }}">
+                      <h5 class="center">{{ product.brand.name }}</h5></a>
+				          <h5 class="center">Ціна: {% show_price_in_user_currency product%} </h5>
+		                <p>{{ product.description|truncatechars:130 }}</p>
+		              </div>
+		              <div class="card-action">
+		                <a href="{{ product.get_absolute_url }}">Add to cart</a>
+		              </div>
+		            </div>
+                </a>
+		        </div>
+			{% endfor %}
+		</div>
+    </div>
+</div>
+{% endblock %}
