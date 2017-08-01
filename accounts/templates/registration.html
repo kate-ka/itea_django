@@ -1,0 +1,60 @@
+<head>
+	<title> registration </title>
+</head>
+
+<style>
+   body{background-color: #81AFDE;}
+   font{color: white}
+</style>
+
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+		<h1>Registration</h1>
+		<hr>
+        <form method="post">
+        Username:
+        <font>
+            <input id="username" type="text">
+        </font>
+        Password:
+        <font>
+            <input id="password" type="text">
+        </font>
+        Confirm password:
+        <font>
+            <input id="password_conf" type="text">
+        </font>
+        First name:
+        <font>
+            <input id="first_name" type="text">
+        </font>
+        Second name:
+        <font>
+            <input id="second_name" type="text" placeholder="">
+        </font>
+        Mobile number:
+        <font>
+            <input id="mobile_number" type="text" placeholder="example: +38-067-XXX-XX-XX">
+        </font>
+        Home address:
+        <font>
+            <input id="home_address" type="text">
+        </font>
+        Gender:
+        <font>
+            <select id="gender">
+                <option>unknown</option>
+                <option value="male">male</option>
+                <option value="female">female</option>
+            </select>
+        </font>
+        </form>
+    </div>
+    <form>
+        <button>Submit</button>
+    </form>
+</div>
+{% endblock %}

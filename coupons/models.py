@@ -70,9 +70,9 @@ class GiftCoupon(_CouponBase):
     git_type = models.CharField(choices=git_types, max_length=1,
                                 blank=False, null=False, editable=False)
     value = models.PositiveIntegerField(blank=False)
-    
+
     # Чому така дата?)
-    expired_date = models.DateTimeField(default=datetime.max)
+    expired_date = models.DateTimeField(default=datetime)
 
     # class Meta:
         # Навіщо вказувати як буде називатися таблиця, це лишня морока, джанго само справиться

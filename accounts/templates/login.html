@@ -1,0 +1,31 @@
+<head>
+	<title> login </title>
+</head>
+<style>
+   body{background-color: #81AFDE;}
+   font{color: white}
+</style>
+
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+		<h1>Log in</h1>
+		<hr>
+		<form method="post">
+            Username:
+            <font>
+                <input id="username" type="text">
+            </font>
+            Password:
+            <font>
+                <input id="password" type="text">
+            </font>
+        </form>
+	</div>
+	<form>
+  		<button>Submit</button>
+	</form>
+</div>
+{% endblock %}
