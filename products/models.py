@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 from django.db import models
+from django.urls.base import reverse
 
 from core.models import BaseModel
 
@@ -23,6 +24,9 @@ class Category(BaseModel):
     def sorted_category_products(self, sort_by):
         return self.category_products.order_by(sort_by)
 
+    def get_absolute_url(self):
+        return reverse("category_detail", kwargs={"category_slug": self.slug})
+
 
 class Brand(BaseModel):
     name = models.CharField(max_length=50)
@@ -30,6 +34,12 @@ class Brand(BaseModel):
 
     def __unicode__(self):
         return self.name
+
+    def sorted_brand_products(self, sort_by):
+        return self.brand_products.order_by(sort_by)
+
+    def get_absolute_url(self):
+        return reverse("brand_detail", kwargs={"brand_id": self.id})
 
 
 class Product(BaseModel):
@@ -39,6 +49,7 @@ class Product(BaseModel):
     slug = models.SlugField(max_length=255)
     brand = models.ForeignKey(Brand, related_name="brand_products")
     price = models.DecimalField(max_digits=9, decimal_places=2, blank=True, default=0.00)
+    currency = models.ForeignKey("Currency")
     quantity = models.PositiveIntegerField()
     description = models.TextField()
     categories = models.ManyToManyField(Category, related_name='category_products')
@@ -53,11 +64,47 @@ class Product(BaseModel):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.name
+
     def product_view(self):
         image = ProductImage.objects.filter(product=self).first()
         return u'<img src="%s" width="80px"/>' % image.image.url if image else ""
     product_view.short_description = 'Image'
     product_view.allow_tags = True
+
+    def product_price(self):
+        default_currency = Currency.objects.filter(is_default=True).first()
+        if default_currency and default_currency != self.currency:
+            current_coefficient = default_currency.coefficient / self.currency.coefficient
+            return '{} {}'.format(round(self.price * current_coefficient, 2), default_currency.symbol)
+        return '{} {}'.format(self.price, self.currency.symbol)
+
+    def get_absolute_url(self):
+        return reverse("product_detail", kwargs={"product_slug": self.slug})
+
+    def get_product_reviews(self):
+        return self.product_reviews.all()
+
+
+class Currency(models.Model):
+    name = models.CharField(max_length=50)
+    symbol = models.CharField(max_length=50)
+    code = models.CharField(max_length=3)
+    coefficient = models.DecimalField(default=0.00, max_digits=9, decimal_places=4,
+                                      verbose_name="Ratio to the dollar")
+    is_default = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name_plural = 'Currency'
+
+    def __str__(self):
+        return "{} {} - {}, {}".format(self.symbol, self.code, self.name, self.is_default)
+
+    def save(self, *args, **kwargs):
+        if self.is_default:
+            Currency.objects.filter(is_default=True).update(is_default=False)
+        super(Currency, self).save(*args, **kwargs)
 
 
 class ProductImage(models.Model):
