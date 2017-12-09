@@ -7,27 +7,19 @@
 </div>
 
 <div>{{ category.descrition }}</div>
+  {% for category_attribute in category_attributes%}
+    <ul>
+    <li>{{ category_attribute.name }}</li>
+      {% for attr_value in category_attribute.attribute_values.all%}
 
+        <li><a href="{% create_filters_url attrs attr_value.id %}">{{ attr_value.value }}</a></li>
+        {% endfor %}
+    </ul>
+  {% endfor %}
 
 <div class="container">
 	<div class="section">
   {% show_product_filters category %}
-{#    <ul>#}
-{#      Sort products:#}
-{#      <li>#}
-{#        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=name">By name. </a>#}
-{#      </li>#}
-{#      <li>#}
-{#        By rating:#}
-{#        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=-rating">From highest to lowest. </a>#}
-{#        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=rating">From lowest to highest. </a>#}
-{#      </li>#}
-{#      <li>#}
-{#        By price:#}
-{#        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=-price">From highest to lowest. </a>#}
-{#        <a href="{% url 'category_detail' category_slug=category.slug %}?sort_by=price">From lowest to highest. </a>#}
-{#      </li>#}
-{#    </ul>#}
 	    <div class="row">
 			{% for product in category_products %}
 
@@ -66,7 +58,89 @@
 				</div> -->
 
 			{% endfor %}
+      <div class="pagination">
+    <span class="step-links">
+        {% if category_products.has_previous %}
+            <a href="?page={{ category_products.previous_page_number }}">&laquo;</a>
+
+        {% endif %}
+
+        <span class="current">
+            Page {{ category_products.number }} of {{ category_products.paginator.num_pages }}.
+        </span>
+
+        {% if category_products.has_next %}
+            <a href="?page={{ category_products.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
 		</div>
     </div>
+<div class="section">
+{% include 'recently_viewed_products.html' %}
+</div>
+<div class="section">
+{% if category_bestsellers %}
+  <h5 class="center"> Category bestsellers </h5>
+  <div class="row">
+    {% for product in category_bestsellers %}
+
+		        <div class="col s12 m4">
+
+		            <div class="card">
+		              <div class="card-image">
+		                <img src="{{ product.product_images.first.image.url }}" alt="{{ product.name }}">
+		                <a href="{{ product.get_absolute_url }}">
+                      <span class="card-title" style="background-color: dimgrey;">{{ product.name }}</span>
+                      </a>
+		              </div>
+		              <div class="card-content">
+                    <a href="{{ product.brand.get_absolute_url }}">
+                      <h5 class="center">{{ product.brand.name }}</h5></a>
+				          <h5 class="center">Ціна: {% show_price_in_user_currency product%}</h5>
+		                <p>{{ product.description|truncatechars:130 }}</p>
+		              </div>
+		              <div class="card-action">
+		                <a href="{{ product.get_absolute_url }}">Add to cart</a>
+		              </div>
+		            </div>
+		        </div>
+			{% endfor %}
+
+  </div>
+{% endif %}
+</div>
+
+<div class="section">
+{% if category_high_rated %}
+  <h5 class="center"> High rated products in {{ category.name }} category </h5>
+  <div class="row">
+    {% for product in category_high_rated %}
+
+		        <div class="col s12 m4">
+
+		            <div class="card">
+		              <div class="card-image">
+		                <img src="{{ product.product_images.first.image.url }}" alt="{{ product.name }}">
+		                <a href="{{ product.get_absolute_url }}">
+                      <span class="card-title" style="background-color: dimgrey;">{{ product.name }}</span>
+                      </a>
+		              </div>
+		              <div class="card-content">
+                    <a href="{{ product.brand.get_absolute_url }}">
+                      <h5 class="center">{{ product.brand.name }}</h5></a>
+				          <h5 class="center">Ціна: {% show_price_in_user_currency product%}</h5>
+		                <p>{{ product.description|truncatechars:130 }}</p>
+		              </div>
+		              <div class="card-action">
+		                <a href="{{ product.get_absolute_url }}">Add to cart</a>
+		              </div>
+		            </div>
+		        </div>
+			{% endfor %}
+
+  </div>
+{% endif %}
+</div>
 </div>
 {% endblock %}

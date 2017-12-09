@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
-{% load products_tags %}
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
   <title>Title</title>
+
   <link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"
           integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
           crossorigin="anonymous"></script>
   <script src="{% static 'js/materialize.min.js' %}"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
 </head>
@@ -29,6 +30,10 @@
                 <i class="material-icons">menu</i></a>
         </div>
     </nav>
+    <div>
+
+    </div>
+
     {% for currency in currencies %}
       <a href="{% url 'choose_currency' %}?currency={{ currency.name }}">{{ currency.symbol }}</a>
     {% endfor %}
@@ -36,6 +41,7 @@
     {% block content %}
 
     {% endblock %}
+
 
 
     <footer class="page-footer grey darken-2">

@@ -3,7 +3,9 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 from django.db import models
+from django.db.models.aggregates import Avg
 from django.urls.base import reverse
+from django.utils.html import format_html
 
 from core.models import BaseModel
 
@@ -21,11 +23,20 @@ class Category(BaseModel):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.name
+
     def sorted_category_products(self, sort_by):
         return self.category_products.order_by(sort_by)
 
     def get_absolute_url(self):
         return reverse("category_detail", kwargs={"category_slug": self.slug})
+
+    def get_category_bestsellers(self):
+        return Product.bestsellers.filter(categories__slug=self.slug)
+
+    def get_category_high_rated_products(self):
+        return Product.high_rated.all().filter(categories__slug=self.slug)
 
 
 class Brand(BaseModel):
@@ -40,6 +51,22 @@ class Brand(BaseModel):
 
     def get_absolute_url(self):
         return reverse("brand_detail", kwargs={"brand_id": self.id})
+
+    def get_brand_bestsellers(self):
+        return Product.bestsellers.filter(brand=self.id)
+
+    def get_brand_high_rated_products(self):
+        return Product.high_rated.all().filter(brand=self.id)
+
+
+class BestsellerProductManager(models.Manager):
+    def get_queryset(self):
+        return super(BestsellerProductManager, self).get_queryset().filter(is_bestseller=True)
+
+
+class HighRatedProductManager(models.Manager):
+    def get_queryset(self):
+        return super(HighRatedProductManager, self).get_queryset().filter(rating__gte=4.0)
 
 
 class Product(BaseModel):
@@ -57,6 +84,10 @@ class Product(BaseModel):
     is_bestseller = models.BooleanField(default=False)
     attribute_values = models.ManyToManyField("AttributeValue", related_name="attribute_values")
     rating = models.FloatField(default=0)
+
+    objects = models.Manager()
+    bestsellers = BestsellerProductManager()
+    high_rated = HighRatedProductManager()
 
     class Meta:
         ordering = ['-create_date']
@@ -85,6 +116,39 @@ class Product(BaseModel):
 
     def get_product_reviews(self):
         return self.product_reviews.all()
+
+    def product_rating(self):
+        if self.rating > 4:
+            rating = """<i class="small material-icons">star</i>
+                        <i class="small material-icons">star</i>
+                        <i class="small material-icons">star</i>
+                        <i class="small material-icons">star</i>
+                        <i class="small material-icons"star></i>"""
+        elif self.rating > 3:
+            rating = """<i class="small material-icons">star</i>
+                        <i class="small material-icons">star</i>
+                        <i class="small material-icons">star</i>
+                        <i class="small material-icons">star</i>
+                        <i class="small material-icons">star_border</i>"""
+        elif self.rating > 2:
+            rating = """<i class="small material-icons">star</i>
+                        <i class="small material-icons">star</i>
+                        <i class="small material-icons">star</i>
+                        <i class="small material-icons">star_border</i>
+                        <i class="small material-icons">star_border</i>"""
+        elif self.rating > 1:
+            rating = """<i class="small material-icons">star</i>
+                        <i class="small material-icons">star</i>
+                        <i class="small material-icons">star</i>
+                        <i class="small material-icons">star</i>
+                        <i class="small material-icons">star_border</i>"""
+        else:
+            rating = """<i class="small material-icons">star_half</i>
+                        <i class="small material-icons">star_border</i>
+                        <i class="small material-icons">star_border</i>
+                        <i class="small material-icons">star_border</i>
+                        <i class="small material-icons">star_border</i>"""
+        return format_html(rating)
 
 
 class Currency(models.Model):
@@ -126,6 +190,12 @@ class AttributeValue(models.Model):
     def __unicode__(self):
         return "{} - {} - {}".format(self.attribute_name.category.name, self.attribute_name.name, self.value)
 
+    def __str__(self):
+        return "{} - {} - {}".format(self.attribute_name.category.name, self.attribute_name.name, self.value)
+
+    def sorted_products_by_value(self):
+        return self.attribute_name.category.category_products.all()
+
 
 class AttributeName(models.Model):
     """
@@ -138,6 +208,9 @@ class AttributeName(models.Model):
     category = models.ForeignKey("Category", related_name="category_attributes")
 
     def __unicode__(self):
+        return self.name
+
+    def __str__(self):
         return self.name
 
 

@@ -1,0 +1,31 @@
+{% load products_tags %}
+<div class="row">
+{% if recently_viewed_products %}
+  <h5 class="center">You've viewed these products recently </h5>
+  {% for product in recently_viewed_products %}
+
+    <div class="col s12 m4">
+
+      <div class="card">
+        <div class="card-image">
+          <img src="{{ product.product_images.first.image.url }}" alt="{{ product.name }}">
+          <a href="{{ product.get_absolute_url }}">
+            <span class="card-title" style="background-color: dimgrey;">{{ product.name }}</span>
+          </a>
+        </div>
+        <div class="card-content">
+          <a href="{{ product.brand.get_absolute_url }}">
+            <h5 class="center">{{ product.brand.name }}</h5></a>
+          <h5 class="center">Ціна: {% show_price_in_user_currency product %}</h5>
+          <p>{{ product.description|truncatechars:130 }}</p>
+        </div>
+        <div class="card-action">
+          <a href="{{ product.get_absolute_url }}">Add to cart</a>
+        </div>
+      </div>
+
+    </div>
+
+  {% endfor %}
+{% endif %}
+</div>

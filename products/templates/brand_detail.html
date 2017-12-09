@@ -26,6 +26,7 @@
 		              <div class="card-content">
                     <a href="{{ product.brand.get_absolute_url }}">
                       <h5 class="center">{{ product.brand.name }}</h5></a>
+                    <div class="center">{{ product.product_rating }}</div>
 				          <h5 class="center">Ціна: {% show_price_in_user_currency product%} </h5>
 		                <p>{{ product.description|truncatechars:130 }}</p>
 		              </div>
@@ -38,5 +39,69 @@
 			{% endfor %}
 		</div>
     </div>
+<div class="section">
+  {% include 'recently_viewed_products.html' %}
+</div>
+<div class="section">
+{% if brand_bestsellers %}
+  <div class="row">
+  <h5 class="center">Brand bestsellers</h5>
+  {% for product in brand_bestsellers %}
+
+		        <div class="col s12 m4">
+              <a href="{{ product.get_absolute_url }}">
+		            <div class="card">
+		              <div class="card-image">
+		                <img src="{{ product.product_images.first.image.url }}" alt="{{ product.name }}">
+		                <span class="card-title" style="background-color: dimgrey;">{{ product.name }}</span>
+		              </div>
+		              <div class="card-content">
+                    <a href="{{ product.brand.get_absolute_url }}">
+                      <h5 class="center">{{ product.brand.name }}</h5></a>
+				          <h5 class="center">Ціна: {% show_price_in_user_currency product%} </h5>
+		                <p>{{ product.description|truncatechars:130 }}</p>
+		              </div>
+		              <div class="card-action">
+		                <a href="{{ product.get_absolute_url }}">Add to cart</a>
+		              </div>
+		            </div>
+                </a>
+		        </div>
+			{% endfor %}
+  </div>
+{% endif %}
+</div>
+<div class="section">
+{% if brand_high_rated %}
+  <h5 class="center"> High rated products in {{ brand.name }} brand </h5>
+  <div class="row">
+    {% for product in brand_high_rated %}
+
+		        <div class="col s12 m4">
+
+		            <div class="card">
+		              <div class="card-image">
+		                <img src="{{ product.product_images.first.image.url }}" alt="{{ product.name }}">
+		                <a href="{{ product.get_absolute_url }}">
+                      <span class="card-title" style="background-color: dimgrey;">{{ product.name }}</span>
+                      </a>
+		              </div>
+		              <div class="card-content">
+                    <a href="{{ product.brand.get_absolute_url }}">
+                      <h5 class="center">{{ product.brand.name }}</h5></a>
+
+				          <h5 class="center">Ціна: {% show_price_in_user_currency product%}</h5>
+		                <p>{{ product.description|truncatechars:130 }}</p>
+		              </div>
+		              <div class="card-action">
+		                <a href="{{ product.get_absolute_url }}">Add to cart</a>
+		              </div>
+		            </div>
+		        </div>
+			{% endfor %}
+
+  </div>
+{% endif %}
+</div>
 </div>
 {% endblock %}

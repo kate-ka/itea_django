@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load products_tags %}
 {% block javascript %}
   <script src="{% static 'js/show_select.js' %}"></script>
 {% endblock %}
@@ -24,6 +25,7 @@
     {% endfor %}
   </div>
 </div>
+  {% include 'recently_viewed_products.html' %}
   <div> Reviews:
     {% for review in product_reviews %}
       <div>{{ review.user.username }}</div>
